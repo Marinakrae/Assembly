@@ -1,0 +1,34 @@
+;Fazer um programa em assembly 6502 que pinte pontos na tela alternando entre a cor preta e a cor branca (mosaico P&B), apenas nas linhas de $0200 até $02FF.
+
+define var_telaL $00
+define var_telaH $01
+
+lda #$00 
+sta var_telaL
+
+lda #$02 
+sta var_telaH 
+
+ldy #$00  
+
+laco:
+lda #$01
+sta (var_telaL), Y
+cpy #$FF
+bne continua_laco
+ldx var_telaH
+cpx #$05
+bne incrementa
+ldx #$02
+stx var_telaH
+jmp continua_laco
+
+continua_laco:
+iny
+iny
+;lda #$01
+jmp laco
+
+incrementa:
+inx ;incrementa o x
+stx var_telaH ;

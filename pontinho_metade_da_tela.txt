@@ -1,0 +1,21 @@
+ldx #$00  ;carrega 0 para o registrador x. Ele que fará o deslocamento
+
+laco:
+lda #$00 ;pinta de preto (0) o registrador a
+sta $0200, X ;soma o valor de base 200 com o valor do registrador x
+inx ;incrementamos o valor de x
+lda #$01 ;carregamos o valor do branco (1) para o registrador a
+sta $0200, X ;pintamos de branco o próximo ponto, ja que o x esta incrementado
+jsr delay ;pula para o subrotina delay
+jmp laco ;volta ao inicio do laço
+
+delay: 
+ldy #200 ;carrega 50 para o registrador y
+inicio_laco: ;começa o laço de delay
+cpy #$0 ;compara o valor de y com 0
+beq fora_laco ;se for igual, ele pula pro fora_laco
+nop ;funcao que nao faz nada
+dey ;decrementa o y
+jmp inicio_laco ;pula pro inicio_laco
+fora_laco:
+rts ;retorno

@@ -1,0 +1,48 @@
+;definimos duas variaveis contiguas de endereço da posicao da tela
+
+define var_telaL $00 ;L de low, parte menos significativa do end de memoria
+define var_telaH $01 ; H de high, parte mais significativa 
+
+lda #$00 ;pinta de preto (0) o registrador a
+sta var_telaL
+
+lda #$02 ;carrega 02 para o reg a 
+sta var_telaH ;atribui 02 ao High, que somado ao Low (00) dará 0200
+
+
+ldy #$00  ;carrega 0 para o registrador x. Ele que fará o deslocamento
+
+laco:
+lda #$00 ;pinta de preto (0) o registrador a
+sta (var_telaL), Y ;soma o valor do var_telaL+var_telaH (ele junta os dois sozinho) com o valor do registrador y (esse modo de endereçamento só funciona com o registrador Y, n pode usar X)
+cpy #$FF ;comparo o y com o FF
+bne continua_laco ;se n for igual ele pula para continua_laco
+ldx var_telaH; carrega o reg x com o valor de var_telaH
+cpx #$05;compara o x com o valor 05
+bne incrementa ;se n for igual, funcao incrementa
+ldx #$02;se for igual, carrega 02 para o x
+stx var_telaH ;o var_telaH volta a valer 02
+jmp continua_laco
+
+incrementa:
+inx ;incrementa o x
+stx var_telaH ;descarrega o x no var_telaH
+
+continua_laco:
+iny ;incrementamos o valor de x
+lda #$01 ;carregamos o valor do branco (1) para o registrador a
+sta (var_telaL), Y ;pintamos de branco o próximo ponto, ja que o x esta incrementado
+jsr delay ;pula para o subrotina delay
+jmp laco ;volta ao inicio do laço
+
+delay: 
+ldx #10 ;carrega 10 para o registrador x (como ja usamos o y, tem que ser o y)
+
+inicio_laco: 
+cpx #$0 ;compara o valor de y com 0
+beq fora_laco ;se for igual, ele pula pro fora_laco
+nop ;funcao que nao faz nada
+dex ;decrementa o y
+jmp inicio_laco ;pula pro inicio_laco
+fora_laco:
+rts ;retorno

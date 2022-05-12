@@ -1,0 +1,22 @@
+;Escrever um programa em Assembly que Desenha na tela do simulador de 6502 a primeira letra do seu nome.
+
+LDA #$04
+STA $200
+STA $220
+STA $240
+STA $260
+STA $280
+STA $2a0
+
+STA $201
+STA $222
+STA $243
+STA $224
+STA $205
+STA $206
+
+STA $226
+STA $246
+STA $266
+STA $286
+STA $2a6

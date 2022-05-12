@@ -1,0 +1,36 @@
+;Escrever um programa em linguagem de montagem 6502 que pinte um mosaico P&B (assim como na atividade 8.1), porém em toda a tela, ou seja, de $0200 até $05FF.
+
+define var_telaL $00
+define var_telaH $01
+
+lda #$00
+sta var_telaL
+
+lda #$02
+sta var_telaH
+
+ldy #$00
+lda #$01
+sta (var_telaL), Y  
+
+laco:
+cpy #$FE
+bne continua_laco
+ldx var_telaH
+cpx #$05
+bne incrementa
+brk
+stx var_telaH
+jmp continua_laco
+
+incrementa:
+inx
+stx var_telaH
+
+continua_laco:
+iny
+iny
+lda #$01
+sta (var_telaL), Y
+jmp laco
+
